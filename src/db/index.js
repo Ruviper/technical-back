@@ -25,6 +25,13 @@ const sequelize = new Sequelize(
   },
 );
 
+const User = require('../domain/users/model')(sequelize);
+
+const db = {
+  User,
+};
+
 module.exports = {
+  User,
   database: sequelize,
 };
