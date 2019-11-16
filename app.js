@@ -7,8 +7,15 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
   
 const usersRouter = require('./src/domain/users/routes');
+const authRouter = require('./src/domain/users/auth/routes');
 
 const app = express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+ 
+// parse application/json
+app.use(bodyParser.json())
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -26,6 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/users', usersRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
