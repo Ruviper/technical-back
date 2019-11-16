@@ -7,4 +7,13 @@ const createSchema = Joi.object().keys({
 
 const createValidator = user => Joi.validate(user, createSchema);
 
-module.exports = { createValidator };
+const updateSchema = Joi.object().keys({
+  userName: Joi.string().required(),
+});
+
+const updateValidator = user => Joi.validate(user, updateSchema);
+
+module.exports = {
+  createValidator,
+  updateValidator,
+};

@@ -1,4 +1,4 @@
-const { STRING, DATE } = require('sequelize');
+const { STRING } = require('sequelize');
 
 module.exports = (sequelize) => {
   const User = sequelize.define('users', {

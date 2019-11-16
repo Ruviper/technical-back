@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
+
 const {
   DATABASE_NAME,
-  DATABASE_PASSWORD,
   DATABASE_USER,
+  DATABASE_PASSWORD,
   DATABASE_LOGGING_ENABLED,
   DATABASE_URL,
 } = require('../config');
@@ -27,11 +28,14 @@ const sequelize = new Sequelize(
 
 const User = require('../domain/users/model')(sequelize);
 
-const db = {
-  User,
-};
+const modelSync = [
+  User.sync(),
+];
+
+const sync = async () => Promise.all(modelSync);
 
 module.exports = {
   User,
   database: sequelize,
+  sync,
 };
