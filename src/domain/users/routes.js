@@ -10,8 +10,11 @@ const usersService = createUsersService({ db });
 
 const router = express.Router();
 
+// Middlewares
+const { endPointAndDateConsole } = require('../../middlewares/endPointAndDate');
+
 // Routes
-router.get('/', (req, res) => {
+router.get('/', endPointAndDateConsole, (req, res) => {
   usersService.findAll()
     .then(users => res.json(users))
     .catch((err) => {
@@ -20,7 +23,7 @@ router.get('/', (req, res) => {
     });;
 });
 
-router.post('/', (req, res) => {
+router.post('/', endPointAndDateConsole, (req, res) => {
   const { body } = req;
   usersService.create(body)
     .then(user => res.json(user))
@@ -31,7 +34,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', endPointAndDateConsole, (req, res) => {
   const { params: { id } } = req;
   const { body } = req;
   usersService
@@ -43,7 +46,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', endPointAndDateConsole, (req, res) => {
   const { params: { id } } = req;
   usersService.deleteById({ id })
     .then(deleteResponse => res.json(deleteResponse))

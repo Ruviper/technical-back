@@ -7,7 +7,10 @@ const authService = createAuthService({ db });
 
 const router = express.Router();
 
-router.post('/login', (req, res) => {
+// Middlewares
+const { endPointAndDateConsole } = require('../../../middlewares/endPointAndDate');
+
+router.post('/login', endPointAndDateConsole, (req, res) => {
   authService
     .login(req.body)
     .then(user => res.json(user))
