@@ -15,7 +15,7 @@ const { endPointAndDateConsole } = require('../../middlewares/endPointAndDate');
 
 // Routes
 router.get('/', endPointAndDateConsole, (req, res) => {
-  usersService.findAll()
+  usersService.find()
     .then(users => res.json(users))
     .catch((err) => {
       console.error(err);
@@ -28,7 +28,6 @@ router.post('/', endPointAndDateConsole, (req, res) => {
   usersService.create(body)
     .then(user => res.json(user))
     .catch((err) => {
-      console.log(req.body)
       console.error(err);
       res.status(400).json(err);
     });

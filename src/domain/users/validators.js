@@ -8,7 +8,7 @@ const createSchema = Joi.object().keys({
 const createValidator = user => Joi.validate(user, createSchema);
 
 const updateSchema = Joi.object().keys({
-  userName: Joi.string().required(),
+  userName: Joi.string(),
 });
 
 const updateValidator = user => Joi.validate(user, updateSchema);

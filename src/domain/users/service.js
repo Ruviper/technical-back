@@ -7,7 +7,7 @@ const { encryptPassword } = require('../../utils/auth');
 const db = require('../../db');
 
 module.exports = () => {
-  const findAll = async () => {
+  const find = async () => {
     try {
       const users = await db.User.findAll();
       return users;
@@ -78,24 +78,24 @@ module.exports = () => {
     }
   };
 
-  const deleteById = ({ id }) => new Promise((resolve, reject) => User.findByPk(id)
-    .then((user) => {
-      if (!user) {
-        return reject({
-          code: 'user.delete',
-          message: 'user does not exist',
-        });
-      }
-      return user.destroy();
-    })
-    .then(() => resolve({ id }))
-    .catch((err) => {
-      console.log('Error deleting', err);
-      reject(err);
-    }));
+  const deleteById = async({ id }) => {
+    try {
+      await db.User.destroy({
+        where: { id }
+      });
+      return { id, deleted: true };
+    } catch(err) {
+      const error = {
+        code: 'users.deleteById',
+        message: `Error while deleting user, ${err.message}`,
+      };
+      throw error;
+    }
+  };
+  
  
   return {
-    findAll,
+    find,
     create,
     update,
     deleteById,
