@@ -4,6 +4,8 @@ const {
 } = require('./validators');
 const { encryptPassword } = require('../../utils/auth');
 
+const { isAuthenticated } = require('./auth/service');
+
 const db = require('../../db');
 
 module.exports = () => {
@@ -12,11 +14,12 @@ module.exports = () => {
       const users = await db.User.findAll();
       return users;
     } catch (err) {
-      const error = {
-        code: 'users.findAll',
-        message: `Error while finding all users, ${err.message}`,
-      };
-      throw error;
+      const errMessage = `Error while finding all users, ${err.message}`
+      console.error({
+        code: 'users.find',
+        message: errMessage,
+      });
+      throw new Error(errMessage);
     }
   };
 
@@ -24,44 +27,44 @@ module.exports = () => {
     try {
       const validation = createValidator(userToBeCreated);
       if (validation.error) {
-        const error = {
+        const errMessage =  validation.error.details[0].message;
+        console.error({
           code: 'users.validation',
-          message: validation.error.details,
-        };
-        throw error.message;
+          message: errMessage,
+        });
+        throw new Error('There are missing required fields');
       }
       const user = await db.User.findOne({
         where: { userName: userToBeCreated.userName },
       });
       if (user) {
-        console.error('User already exists');
-        const error = {
+        const errMessage = 'User with this userName already exists';
+        console.error( {
           code: 'user.exists',
-          message: 'User with this userName already exists,',
-        };
-        throw error;
+          message: errMessage,
+        });
+
+        throw new Error(errMessage);
       }
       const hash = await encryptPassword(userToBeCreated.password);
       const newUser = await db.User.create({ ...userToBeCreated, password: hash });
       return newUser;
     } catch (err) {
-      const error = {
-        code: 'user.create.error',
-        message: `Error while create user, ${err.message}`,
-      };
-      throw error;
+      throw new Error(`Error while create user, ${err.message}`);
     }
   };
 
   const update = async (id, body) => {
     const validation = updateValidator(body);
     if (validation.error) {
-      const error = {
+      const errMessage =  validation.error.details[0].message;
+      console.error({
         code: 'user.validation',
-        message: validation.error.details,
-      };
-      throw error;
+        message: errMessage
+      });
+      throw new Error(errMessage);
     }
+
     try {
       const updatedUser = await db.User.update(body, {
         where: { id },
@@ -70,11 +73,14 @@ module.exports = () => {
       });
       return updatedUser[1];
     } catch (err) {
-      const error = {
+      const errMessage = `Error while updating users ${err}`;
+
+      console.error({
         code: 'user.update',
-        message: `Error while updating users ${err}`,
-      };
-      throw error;
+        message: errMessage,
+      });
+
+      throw new Error(errMessage);
     }
   };
 
@@ -85,11 +91,12 @@ module.exports = () => {
       });
       return { id, deleted: true };
     } catch(err) {
+      const errMessage = `Error while deleting user, ${err.message}`;
       const error = {
         code: 'users.deleteById',
-        message: `Error while deleting user, ${err.message}`,
+        message: errMessage,
       };
-      throw error;
+      throw new Error(errMessage);
     }
   };
   

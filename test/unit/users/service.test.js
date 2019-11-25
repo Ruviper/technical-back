@@ -44,7 +44,7 @@ describe('users service', () => {
       throw new Error('Validation has worked but it should not');
     } catch (err) {
       should.exist(err);
-      err.message.should.equal('"userName" is required');
+      err.message.should.equal('Error while created user, There are missing required fields');
     }
   });
 
@@ -70,7 +70,7 @@ describe('users service', () => {
       throw new Error('Validation should have failed');
     } catch (err) {
       should.exist(err);
-      err.message[0].message.should.equal('"firstName" is not allowed');
+      err.message.should.equal('"firstName" is not allowed');
     }
   });
 

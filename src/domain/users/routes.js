@@ -12,46 +12,47 @@ const router = express.Router();
 
 // Middlewares
 const { endPointAndDateConsole } = require('../../middlewares/endPointAndDate');
+const { isAuthenticated } = require('../../middlewares/isAuthenticated');
 
 // Routes
-router.get('/', endPointAndDateConsole, (req, res) => {
+router.get('/', [endPointAndDateConsole, isAuthenticated], (req, res, next) => {
   usersService.find()
     .then(users => res.json(users))
     .catch((err) => {
-      console.error(err);
-      res.status(400).json(err);
-    });;
+      err.status = 400;
+      next(err);
+    });
 });
 
-router.post('/', endPointAndDateConsole, (req, res) => {
+router.post('/', [endPointAndDateConsole, isAuthenticated], (req, res, next) => {
   const { body } = req;
   usersService.create(body)
     .then(user => res.json(user))
     .catch((err) => {
-      console.error(err);
-      res.status(400).json(err);
+      err.status = 400;
+      next(err);
     });
 });
 
-router.put('/:id', endPointAndDateConsole, (req, res) => {
+router.put('/:id', [endPointAndDateConsole, isAuthenticated], (req, res, next) => {
   const { params: { id } } = req;
   const { body } = req;
   usersService
     .update(id, body)
     .then(updatedUser => res.json(updatedUser))
     .catch((err) => {
-      console.error(err);
-      res.status(400).json(err);
+      err.status = 400;
+      next(err);
     });
 });
 
-router.delete('/:id', endPointAndDateConsole, (req, res) => {
+router.delete('/:id', [endPointAndDateConsole, isAuthenticated], (req, res, next) => {
   const { params: { id } } = req;
   usersService.deleteById({ id })
     .then(deleteResponse => res.json(deleteResponse))
     .catch((err) => {
-      console.error(err);
-      res.status(400).json(err);
+      err.status = 400;
+      next(err);
     });
 });
 

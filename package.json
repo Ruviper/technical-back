@@ -22,7 +22,8 @@
     "underscore": "^1.9.1"
   },
   "scripts": {
-    "start-dev": "TALENTOMOBILE_ENV=dev nodemon ./bin/www",
+    "start": "TALENTOMOBILE_ENV=production node ./bin/www",
+    "dev": "TALENTOMOBILE_ENV=dev nodemon ./bin/www",
     "start-database": "docker run -e POSTGRES_USER=talentomobiledev -e POSTGRES_DB=talentomobile -e ALLOW_IP_RANGE=0.0.0.0/0 -ti -p 5432:5432 -v $(pwd)/pgdata:/var/lib/postgresql/data mdillon/postgis",
     "test": "TALENTOMOBILE_ENV=test ./node_modules/mocha/bin/mocha ./test/**/*.test.js --exit --timeout 5000"
   }

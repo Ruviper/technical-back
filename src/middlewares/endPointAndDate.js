@@ -1,7 +1,8 @@
-const endPointAndDateConsole = (req,res,next) => {
-  const date = new Date()
-  console.log('Date: '+ date.getDate() + "/" + (date.getMonth() +1) + "/" + date.getFullYear());
-  console.log("Hour: "+ date.getHours() + ":" + date.getMinutes() + ":"+date.getSeconds());
+const logger = require('morgan')
+
+const endPointAndDateConsole = (req, res, next) => {
+  console.log(`Time: ${req._startTime}`);
+  console.log(`Url: ${req.originalUrl}`);
   next();
 };
 

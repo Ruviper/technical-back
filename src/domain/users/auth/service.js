@@ -1,4 +1,3 @@
-const _ = require('underscore');
 const validator = require('./validator');
 const {
   createToken,
@@ -34,13 +33,7 @@ module.exports = ({ db }) => {
           }
           console.log(`User ${user.userName} correctly logged in`);
           const token = createToken({ id: user.id, email: user.email });
-          return resolve({
-            user: _.pick(
-              user,
-              'userName',
-            ),
-            token,
-          });
+          return resolve(token);
         });
       })
       .catch(err => reject(err));

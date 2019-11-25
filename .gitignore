@@ -2,12 +2,4 @@
 node_modules/
 
 # pgdata
-pgdata
-.idea/.gitignore
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/wheresplan.api.iml
-.idea/codeStyles/codeStyleConfig.xml
-.idea/codeStyles/Project.xml
-.idea/inspectionProfiles/Project_Default.xml
+pgdata/
